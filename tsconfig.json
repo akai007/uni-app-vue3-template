@@ -8,31 +8,16 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "experimentalDecorators":true,
+    "experimentalDecorators": true,
     "sourceMap": true,
     "skipLibCheck": true,
+    "noImplicitAny": false,
     "baseUrl": ".",
-    "types": [
-      "webpack-env",
-      "@dcloudio/types",
-      "miniprogram-api-typings",
-      "mini-types"
-    ],
+    "types": ["webpack-env", "@dcloudio/types", "miniprogram-api-typings", "mini-types"],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
-  "exclude": [
-    "node_modules",
-    "unpackage",
-    "src/**/*.nvue"
-  ]
+  "exclude": ["node_modules", "unpackage", "src/**/*.nvue"]
 }
