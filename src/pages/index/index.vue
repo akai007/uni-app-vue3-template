@@ -7,15 +7,10 @@
   </view>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-export default defineComponent({
-  setup() {
-    return {
-      title: 'hello123',
-    }
-  },
-})
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const title = ref('hello uni-app-vue3 setup')
 </script>
 
 <style lang="scss">
@@ -25,13 +20,13 @@ export default defineComponent({
 }
 
 .logo {
-  height: 200upx;
-  width: 200upx;
-  margin-top: 200upx;
+  height: 200rpx;
+  width: 200rpx;
+  margin-top: 200rpx;
 }
 
 .title {
-  font-size: 36upx;
+  font-size: 36rpx;
   color: #8f8f94;
 }
 </style>
