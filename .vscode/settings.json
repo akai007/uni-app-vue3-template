@@ -1,0 +1,20 @@
+{
+  "editor.tabSize": 2,
+  
+  // vue3 ts eslint prettier settings
+  "vetur.validation.template": false,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  // end vue3 ts eslint prettier settings
+}

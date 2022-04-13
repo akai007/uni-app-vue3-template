@@ -1,10 +1,11 @@
 module.exports = {
+  env: { node: true },
+  globals: { uni: true, wx: true, my: true, swan: true },
   parser: 'vue-eslint-parser',
-  extends: ['plugin:vue/recommended', 'plugin:prettier/recommended'],
-  parserOptions: {
-    parser: '@typescript-eslint/parser',
-    ecmaVersion: 2018,
-    sourceType: 'module',
-  },
+  parserOptions: { parser: '@typescript-eslint/parser', sourceType: 'module' },
+  extends: ['eslint:recommended', 'plugin:vue/vue3-recommended', 'prettier'],
   plugins: ['vue', '@typescript-eslint'],
+  rules: {
+    'vue/multi-word-component-names': 0,
+  },
 }

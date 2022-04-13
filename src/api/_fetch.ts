@@ -55,7 +55,7 @@ fetch.interceptors.response.use(
     }
   },
   (error: AxiosError) => {
-    const params = qs.parse(error.config.data)
+    // const params = qs.parse(error.config.data)
     // 未登录 跳转登录页
     if (error.response!.status == 401) {
       if (jumpLoginCount == 0) {
