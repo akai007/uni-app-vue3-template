@@ -9,8 +9,22 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { onShow, onHide, onLoad } from '@dcloudio/uni-app'
 
-const title = ref('hello uni-app-vue3 setup')
+const title = ref('')
+onLoad((options) => {
+  console.log('page query', options)
+})
+
+// 页面切换到前台时
+onShow(() => {
+  title.value = 'hello uni-app-vue3 setup'
+})
+
+// 页面切换到后台时
+onHide(() => {
+  title.value = 'see you'
+})
 </script>
 
 <style lang="scss">
