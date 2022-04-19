@@ -1,4 +1,4 @@
-# uni-app-vue3-demo
+# uni-app-vue3-template
 
 ## Project setup
 ```
