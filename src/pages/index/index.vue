@@ -4,6 +4,7 @@
     <view>
       <text class="title">{{ title }}</text>
     </view>
+    <button class="button" @click="handleClick">count: {{ count }}, click to add</button>
   </view>
 </template>
 
@@ -25,6 +26,9 @@ onShow(() => {
 onHide(() => {
   title.value = 'see you'
 })
+
+const count = ref(0)
+const handleClick = () => count.value++
 </script>
 
 <style lang="scss">
@@ -42,5 +46,8 @@ onHide(() => {
 .title {
   font-size: 36rpx;
   color: #8f8f94;
+}
+.button {
+  margin-top: 32rpx;
 }
 </style>
