@@ -283,8 +283,161 @@ export { fetch, API_SOURCE }
 
 ```
 
-## 总结
-通过上述步骤后，就能愉快的进行踩坑之旅了~ 如有需要可访问源码 ![github.svg](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c1466516857f47af8373fb376e126ef4~tplv-k3u1fbpfcp-watermark.image?) [uni-app-vue3-template](https://github.com/akai007/uni-app-vue3-template)
+
+
+# script setup开发实践
+
+## 前言
+截止到目前，使用vue3 开发uni-app 虽然小坑还是不少，但已经达到基本可用的阶段。本文重点总结在使用Vue3 Composition-api 开发 Uni-app 时需要避开的坑和注意事项； 假定你已经搭建好基本的开发"架子"，如有需要可以参考我的另一篇文章 #[ Uni-app + Vue3 + TS 基础项目搭建 实战](https://juejin.cn/post/7035929902381531150)。
+
+## 生命周期函数
+- onLoad 可以获取页面传递的参数
+``` ts
+<script setup lang="ts">
+import { ref } from 'vue'
+import { onShow, onHide, onLoad } from '@dcloudio/uni-app'
+
+const title = ref('')
+onLoad((options) => {
+  console.log('page query', options)
+})
+
+// 页面切换到前台时
+onShow(() => {
+  title.value = 'hello uni-app-vue3 setup'
+})
+
+// 页面切换到后台时
+onHide(() => {
+  title.value = 'see you'
+})
+</script>
+```
+
+## 自定义样式 custom-class
+- 在使用自定义组件 不支持 \<component class="class-name">\</component>，因此需要提供一个customClass prop来传递类名进行样式绑定
+``` ts
+<!-- 父组件 -->
+<template>
+  <view :class="[customClass]"></view>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+export default defineComponent({
+  props: {
+    customClass: { type: String, default: '' }, // 自定义类
+  },
+})
+</script>
+
+<!-- 子组件 -->
+<template>
+  <component custom-class="custom-class"></component>
+</template>
+
+<style scoped>
+/* 如使用 scoped 则需要/deep/ */
+/deep/ .custom-class {}
+</style>
+```
+
+## 事件 emit
+``` ts
+<template>
+  <view @click="handleClick"></view>
+  
+  <!-- 阻止事件冒泡 -->
+  <view @click.stop="handleClick"></view>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+export default defineComponent({
+  emits: ['click'], // 显性描述事件后 会对emit进行约束
+  setup(props, {emit}) {
+    function handleClick(e) {
+      emit('click', e)
+    }
+    
+    return {
+      handleClick,
+    }
+  },
+})
+</script>
+```
+
+## 数据 props \ ref \ reactive \ computed 
+``` ts
+<script lang="ts">
+import { defineComponent, PropType, ref, reactive, computed } from 'vue'
+
+type Data = { id: string }
+
+export default defineComponent({
+  props: {
+    data: { type: Object as PropType<Data>, default: false },
+  },
+  setup(props) {
+    // ref更适合一个对象赋值
+    const data = ref(props.data)
+    
+    // reactive更适合小规模逻辑的封装
+    const popup = reactive({
+      isShow: false,
+      show: () => (popup.isShow = true)
+      hide: () => (popup.isShow = false)
+    })
+    
+    const id1 = computed(() => props.data ? props.data.id : '') 
+    // 由于uni和vue生命周期不一致，在初始化过程中props.data 可能还未定义 需要保证不会报错，也可以用下面ts的语法糖来简化
+    const id2 = computed(() => props.data?.id)
+    
+    return {
+      isShow,
+      popup,
+      id1, id2,
+    }
+  },
+})
+</script>
+```
+
+## 监听 watch
+``` ts
+<script lang="ts">
+import { defineComponent, PropType } from 'vue'
+
+type Data = { id: string }
+
+export default defineComponent({
+  props: {
+    data: { type: Object as PropType<Data>, default: false },
+  },
+  setup(props) {
+    
+    watch(props, (val, oldVal) => {
+      if (!props) return // 规避uni和vue生命周期不一致的问题
+      if (val.data?.id !== oldVal.data?.id) {
+        console.log('props.data.id 变了')
+      }
+    })
+    
+    const data = ref(props.data)
+    watch(data, (val, oldVal) => {
+      if (val.id !== oldVal.id) {  
+        console.log('data.id变了')
+      }
+    })
+    
+  },
+})
+</script>
+```
+
+## 其他注意事项
+- setup 中 async function 暂时不会被转义，而支付宝小程序本身不支持，因此暂不建议使用
 
 
 
